@@ -1,0 +1,19 @@
+Beta Distribution Functions
+Copyright 2021 Justin Smith, jvstinian.com
+
+===============================================================================
+This work uses the Apache Commons Math library, which is under the
+Apache License 2.0.  Per the license, the contents of the NOTICE 
+file are as follows: 
+
+Apache Commons Math
+Copyright 2001-2016 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+This product includes software developed for Orekit by
+CS Systèmes d'Information (http://www.c-s.fr/)
+Copyright 2010-2012 CS Systèmes d'Information
+===============================================================================
+ 
