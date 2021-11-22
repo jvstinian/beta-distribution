@@ -25,7 +25,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>main.java.BetaDistribution</mainClass>
+              <mainClass>main.java.BetaDistributionExample</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -44,7 +44,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>main.java.BetaDistribution</mainClass>
+              <mainClass>main.java.BetaDistributionExample</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
