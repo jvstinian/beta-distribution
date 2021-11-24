@@ -30,15 +30,8 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
   }
 
   public ScaledBetaDistribution(ScaledBetaDistributionParameters params) {
-    // super((BetaDistributionParameters) params, params.getScale());
     super(params);
   }
-
-  /* TODO: Is this used?
-  public double getMaxValue() {
-    return this.scale;
-  }
-  */
 
   private static class CDF implements UnivariateDifferentiableFunction {
     private UnivariateDifferentiableFunction betacdf;
@@ -57,12 +50,6 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
     public DerivativeStructure value(DerivativeStructure t) {
       return this.betacdf.value(t.divide(this.scale));
     }
-
-    /* TODO: Is this needed?
-    public double getMaxValue() {
-      return this.scale;
-    }
-    */
   };
 
   public static class SurvivalFunction implements UnivariateDifferentiableFunction {
@@ -79,12 +66,6 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
     public DerivativeStructure value(DerivativeStructure t) {
       return this.cdf.value(t).subtract(1.0).negate();
     }
-
-    /* TODO: Is this needed?
-    public double getMaxValue() {
-      return this.cdf.getMaxValue();
-    }
-    */
   };
 
   public SurvivalFunction getSurvivalFunction() {
