@@ -29,21 +29,6 @@ public class BetaDistributionExample {
    * @param args
    */
   public static void main(String[] args) {
-    /*
-    try {
-      BetaDistributionCDF cdf = new BetaDistributionCDF(0.5, 0.5);
-      DerivativeStructure ds = new DerivativeStructure(1, 2, 0, 0.25);
-      double[] derivs = cdf.value(ds).getAllDerivatives();
-      System.out.println("All derivatives of Beta Distribution CDF with alpha=0.5, beta=0.5");
-      for (int i = 0; i < derivs.length; i++) {
-        System.out.println(String.valueOf(i) + ": " + String.valueOf(derivs[i]));
-      }
-
-    } catch (InvalidParameterException e) {
-      System.err.println(e);
-    }
-    */
-
     try {
       BetaDistribution dist = new BetaDistribution(0.5, 0.5);
       double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
@@ -59,9 +44,9 @@ public class BetaDistributionExample {
     }
 
     try {
+      // Calculate OEP
       System.out.println("Calculating the Occurrence PML using the new class");
       double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
-      // Calculating OEP
       RMSEventLoss[] elt =
           new RMSEventLoss[] {
             new RMSEventLoss(1, 0.1, 500.0, 500.0, 500.0, 10000.0),
