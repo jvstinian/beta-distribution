@@ -30,7 +30,7 @@ public class CompoundPoissonScaledBetaDistributionEP
     super(a, b, s, l);
   }
 
-  private static class OEP implements UnivariateDifferentiableFunction {
+  public static class OEP implements UnivariateDifferentiableFunction {
     private ScaledBetaDistribution.SurvivalFunction scaledbetasf;
     private double lambda;
 
