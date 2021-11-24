@@ -22,7 +22,6 @@ import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParam
 import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionEP;
 import com.jvstinian.math.probability.BetaDistributionCDF;
 import com.jvstinian.math.probability.BetaDistributionQuantileObjective;
-import com.jvstinian.math.probability.ScaledBetaDistributionSurvivalFunction;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.solvers.BisectionSolver;
 

@@ -17,7 +17,6 @@
 package com.jvstinian.math.ep;
 
 import com.jvstinian.math.InvalidParameterException;
-import com.jvstinian.math.probability.ScaledBetaDistributionSurvivalFunction;
 import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
 
 public class RMSEventLoss {

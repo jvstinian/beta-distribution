@@ -17,26 +17,20 @@
 package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
-import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 
-public class ScaledBetaDistributionSurvivalFunction implements UnivariateDifferentiableFunction {
-  private ScaledBetaDistributionCDF cdf;
+public class CompoundPoissonScaledBetaDistributionParameters extends ScaledBetaDistributionParameters {
+  protected double lambda;
 
-  public ScaledBetaDistributionSurvivalFunction(double a, double b, double s)
+  public CompoundPoissonScaledBetaDistributionParameters(double a, double b, double s, double l)
       throws InvalidParameterException {
-    this.cdf = new ScaledBetaDistributionCDF(a, b, s);
+    super(a, b, s);
+    this.lambda = l;
   }
   
-  public double value(double x) {
-    return 1.0 - this.cdf.value(x);
+  public CompoundPoissonScaledBetaDistributionParameters(BetaDistributionParameters params, double s, double l) {
+    super(params, s);
+    this.lambda = l;
   }
 
-  public DerivativeStructure value(DerivativeStructure t) {
-    return this.cdf.value(t).subtract(1.0).negate();
-  }
-
-  public double getMaxValue() {
-    return this.cdf.getMaxValue();
-  }
+  public double getPoissonRate() { return this.lambda; }
 }

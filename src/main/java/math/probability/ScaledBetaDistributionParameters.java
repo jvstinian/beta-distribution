@@ -17,27 +17,26 @@
 package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
-import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
+import com.jvstinian.math.probability.BetaDistributionParameters;
 
-public class ScaledBetaDistributionCDF implements UnivariateDifferentiableFunction {
-  private BetaDistributionCDF betacdf;
-  private double scale;
 
-  public ScaledBetaDistributionCDF(double a, double b, double s) throws InvalidParameterException {
-    this.betacdf = new BetaDistributionCDF(a, b);
+public class ScaledBetaDistributionParameters extends BetaDistributionParameters {
+  protected double scale;
+
+  public ScaledBetaDistributionParameters(double a, double b, double s) throws InvalidParameterException {
+    super(a, b);
     this.scale = s;
   }
-
-  public double value(double x) {
-    return this.betacdf.value(x / this.scale);
+  
+  public ScaledBetaDistributionParameters(BetaDistributionParameters params, double s) {
+    super(params);
+    this.scale = s;
+  }
+  
+  public ScaledBetaDistributionParameters(ScaledBetaDistributionParameters params) {
+    super((BetaDistributionParameters) params);
+    this.scale = params.getScale();
   }
 
-  public DerivativeStructure value(DerivativeStructure t) {
-    return this.betacdf.value(t.divide(this.scale));
-  }
-
-  public double getMaxValue() {
-    return this.scale;
-  }
+  public double getScale() { return this.scale; }
 }

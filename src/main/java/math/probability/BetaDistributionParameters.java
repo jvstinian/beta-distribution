@@ -17,15 +17,12 @@
 package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
-import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
-import org.apache.commons.math3.special.Beta;
 
-public class BetaDistributionPDF implements UnivariateDifferentiableFunction {
-  private double alpha;
-  private double beta;
+public class BetaDistributionParameters {
+  protected double alpha;
+  protected double beta;
 
-  public BetaDistributionPDF(double a, double b) throws InvalidParameterException {
+  public BetaDistributionParameters(double a, double b) throws InvalidParameterException {
     if (a <= 0.0) {
       throw new InvalidParameterException("BetaDistributionPDF", "a", "a>0", a);
     }
@@ -36,23 +33,16 @@ public class BetaDistributionPDF implements UnivariateDifferentiableFunction {
     this.beta = b;
   }
 
+  public BetaDistributionParameters(BetaDistributionParameters params) {
+    this.alpha = params.alpha;
+    this.beta = params.beta;
+  }
+
   public double getAlpha() {
     return this.alpha;
   }
 
   public double getBeta() {
     return this.beta;
-  }
-
-  public double value(double x) {
-    DerivativeStructure c = new DerivativeStructure(1, 0, x);
-    return this.value(c).getValue();
-  }
-
-  public DerivativeStructure value(DerivativeStructure t) {
-    DerivativeStructure x1 = t.pow(this.alpha - 1.0); // x^(\alpha - 1}
-    DerivativeStructure x2 = t.subtract(1.0).negate().pow(this.beta - 1.0); // (1-x)^{\beta - 1}
-    DerivativeStructure denom = t.createConstant(Math.exp(Beta.logBeta(this.alpha, this.beta)));
-    return x1.multiply(x2).divide(denom);
   }
 };
