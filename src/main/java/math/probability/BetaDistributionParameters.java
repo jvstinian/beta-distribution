@@ -17,24 +17,32 @@
 package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
-import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 
-public class BetaDistributionQuantileObjective implements UnivariateDifferentiableFunction {
-  private BetaDistributionCDF cdf;
-  private double prob;
+public class BetaDistributionParameters {
+  protected double alpha;
+  protected double beta;
 
-  public BetaDistributionQuantileObjective(double a, double b, double q)
-      throws InvalidParameterException {
-    this.cdf = new BetaDistributionCDF(a, b);
-    this.prob = q;
+  public BetaDistributionParameters(double a, double b) throws InvalidParameterException {
+    if (a <= 0.0) {
+      throw new InvalidParameterException("BetaDistributionPDF", "a", "a>0", a);
+    }
+    if (b <= 0.0) {
+      throw new InvalidParameterException("BetaDistributionPDF", "b", "b>0", b);
+    }
+    this.alpha = a;
+    this.beta = b;
   }
 
-  public double value(double x) {
-    return this.cdf.value(x) - this.prob;
+  public BetaDistributionParameters(BetaDistributionParameters params) {
+    this.alpha = params.alpha;
+    this.beta = params.beta;
   }
 
-  public DerivativeStructure value(DerivativeStructure t) {
-    return this.cdf.value(t).subtract(this.prob);
+  public double getAlpha() {
+    return this.alpha;
   }
-}
+
+  public double getBeta() {
+    return this.beta;
+  }
+};

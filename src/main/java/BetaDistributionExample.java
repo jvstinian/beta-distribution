@@ -18,14 +18,9 @@ package main.java;
 
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.ep.RMSEventLoss;
-import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionOEP;
-import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionOPMLCalculator;
-import com.jvstinian.math.probability.BetaDistributionCDF;
-import com.jvstinian.math.probability.BetaDistributionPDF;
-import com.jvstinian.math.probability.BetaDistributionQuantileObjective;
-import com.jvstinian.math.probability.ScaledBetaDistributionSurvivalFunction;
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
-import org.apache.commons.math3.analysis.solvers.BisectionSolver;
+import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionEP;
+import com.jvstinian.math.probability.BetaDistribution;
+import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
 
 public class BetaDistributionExample {
   /**
@@ -34,13 +29,9 @@ public class BetaDistributionExample {
    * @param args
    */
   public static void main(String[] args) {
+    /*
     try {
       BetaDistributionCDF cdf = new BetaDistributionCDF(0.5, 0.5);
-      System.out.println("P[B<=0.5]=" + cdf.value(0.5));
-
-      BetaDistributionPDF pdf = new BetaDistributionPDF(0.5, 0.5);
-      System.out.println("p(0.25)=" + pdf.value(0.25));
-
       DerivativeStructure ds = new DerivativeStructure(1, 2, 0, 0.25);
       double[] derivs = cdf.value(ds).getAllDerivatives();
       System.out.println("All derivatives of Beta Distribution CDF with alpha=0.5, beta=0.5");
@@ -51,19 +42,25 @@ public class BetaDistributionExample {
     } catch (InvalidParameterException e) {
       System.err.println(e);
     }
+    */
 
     try {
+      BetaDistribution dist = new BetaDistribution(0.5, 0.5);
       double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
+      double[] quantiles = dist.calculateQuantiles(probs);
       for (int i = 0; i < probs.length; i++) {
         double prob = probs[i];
-        BisectionSolver solver = new BisectionSolver();
-        BetaDistributionQuantileObjective betaqobj =
-            new BetaDistributionQuantileObjective(0.5, 0.5, prob);
-        double quantile = solver.solve(1000000, betaqobj, 0.0, 1.0);
+        double quantile = quantiles[i];
         System.out.println(
             "Quantile for probability=" + String.valueOf(prob) + ": " + String.valueOf(quantile));
       }
+    } catch (InvalidParameterException e) {
+      System.err.println(e);
+    }
 
+    try {
+      System.out.println("Calculating the Occurrence PML using the new class");
+      double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
       // Calculating OEP
       RMSEventLoss[] elt =
           new RMSEventLoss[] {
@@ -71,20 +68,14 @@ public class BetaDistributionExample {
             new RMSEventLoss(2, 0.1, 300.0, 400.0, 600.0, 5000.0),
             new RMSEventLoss(3, 0.5, 200.0, 300.0, 400.0, 4000.0)
           };
-
-      ScaledBetaDistributionSurvivalFunction[] survivalFunctions =
-          new ScaledBetaDistributionSurvivalFunction[elt.length];
-      double[] lambdas = new double[elt.length];
-
+      CompoundPoissonScaledBetaDistributionParameters[] distparams =
+          new CompoundPoissonScaledBetaDistributionParameters[elt.length];
       for (int idx = 0; idx < elt.length; idx++) {
-        survivalFunctions[idx] = elt[idx].getSurvivalFunction();
-        lambdas[idx] = elt[idx].getRate();
+        distparams[idx] = elt[idx].getDistributionParameters();
       }
-      SumOfCompoundPoissonScaledBetaDistributionOEP oep =
-          new SumOfCompoundPoissonScaledBetaDistributionOEP(survivalFunctions, lambdas);
-      SumOfCompoundPoissonScaledBetaDistributionOPMLCalculator calc =
-          new SumOfCompoundPoissonScaledBetaDistributionOPMLCalculator(oep);
-      double[] opmls = calc.calculateOccurrencePML(probs);
+      SumOfCompoundPoissonScaledBetaDistributionEP ep =
+          new SumOfCompoundPoissonScaledBetaDistributionEP(distparams);
+      double[] opmls = ep.calculateOccurrencePML(probs);
       for (int idx = 0; idx < probs.length; idx++) {
         System.out.println(
             "Occurrence PML for probability="
@@ -92,6 +83,7 @@ public class BetaDistributionExample {
                 + ": "
                 + String.valueOf(opmls[idx]));
       }
+
     } catch (InvalidParameterException e) {
       System.err.println(e);
     }
