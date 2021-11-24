@@ -18,6 +18,7 @@ package com.jvstinian.math.ep;
 
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.probability.ScaledBetaDistributionSurvivalFunction;
+import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
 
 public class RMSEventLoss {
   private int eventId;
@@ -48,12 +49,12 @@ public class RMSEventLoss {
     return this.getA() * ((this.exposure / this.mean) - 1.0);
   }
 
-  public ScaledBetaDistributionSurvivalFunction getSurvivalFunction()
-      throws InvalidParameterException {
-    return new ScaledBetaDistributionSurvivalFunction(this.getA(), this.getB(), this.exposure);
-  }
-
   public double getRate() {
     return this.rate;
+  }
+  
+  public CompoundPoissonScaledBetaDistributionParameters getDistributionParameters()
+      throws InvalidParameterException {
+    return new CompoundPoissonScaledBetaDistributionParameters(this.getA(), this.getB(), this.exposure, this.rate);
   }
 }

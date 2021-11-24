@@ -27,7 +27,7 @@ public class ScaledBetaDistributionSurvivalFunction implements UnivariateDiffere
       throws InvalidParameterException {
     this.cdf = new ScaledBetaDistributionCDF(a, b, s);
   }
-
+  
   public double value(double x) {
     return 1.0 - this.cdf.value(x);
   }
