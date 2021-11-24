@@ -51,9 +51,10 @@ public class RMSEventLoss {
   public double getRate() {
     return this.rate;
   }
-  
+
   public CompoundPoissonScaledBetaDistributionParameters getDistributionParameters()
       throws InvalidParameterException {
-    return new CompoundPoissonScaledBetaDistributionParameters(this.getA(), this.getB(), this.exposure, this.rate);
+    return new CompoundPoissonScaledBetaDistributionParameters(
+        this.getA(), this.getB(), this.exposure, this.rate);
   }
 }

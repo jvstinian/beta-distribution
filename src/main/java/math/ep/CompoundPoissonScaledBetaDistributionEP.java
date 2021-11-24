@@ -17,14 +17,14 @@
 package com.jvstinian.math.ep;
 
 import com.jvstinian.math.InvalidParameterException;
-// import com.jvstinian.math.probability.ScaledBetaDistributionSurvivalFunction;
 import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
-import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
 import com.jvstinian.math.probability.ScaledBetaDistribution;
+import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 
-public class CompoundPoissonScaledBetaDistributionEP extends CompoundPoissonScaledBetaDistributionParameters {
+public class CompoundPoissonScaledBetaDistributionEP
+    extends CompoundPoissonScaledBetaDistributionParameters {
   public CompoundPoissonScaledBetaDistributionEP(double a, double b, double s, double l)
       throws InvalidParameterException {
     super(a, b, s, l);
@@ -34,8 +34,7 @@ public class CompoundPoissonScaledBetaDistributionEP extends CompoundPoissonScal
     private ScaledBetaDistribution.SurvivalFunction scaledbetasf;
     private double lambda;
 
-    public OEP(
-        ScaledBetaDistribution.SurvivalFunction sf, double l) {
+    public OEP(ScaledBetaDistribution.SurvivalFunction sf, double l) {
       this.scaledbetasf = sf;
       this.lambda = l;
     }
@@ -56,12 +55,12 @@ public class CompoundPoissonScaledBetaDistributionEP extends CompoundPoissonScal
       return this.scaledbetasf.value(t).multiply(-1.0 * this.lambda).exp().subtract(1.0).negate();
     }
   };
-  
+
   public OEP getOEPFunction() {
     double lambda = this.getPoissonRate();
-    ScaledBetaDistribution sbdist = new ScaledBetaDistribution((ScaledBetaDistributionParameters) this);
+    ScaledBetaDistribution sbdist =
+        new ScaledBetaDistribution((ScaledBetaDistributionParameters) this);
     ScaledBetaDistribution.SurvivalFunction sf = sbdist.getSurvivalFunction();
     return new OEP(sf, lambda);
   }
-
 }

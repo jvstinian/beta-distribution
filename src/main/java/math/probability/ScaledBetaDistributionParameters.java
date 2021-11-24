@@ -17,26 +17,27 @@
 package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
-import com.jvstinian.math.probability.BetaDistributionParameters;
-
 
 public class ScaledBetaDistributionParameters extends BetaDistributionParameters {
   protected double scale;
 
-  public ScaledBetaDistributionParameters(double a, double b, double s) throws InvalidParameterException {
+  public ScaledBetaDistributionParameters(double a, double b, double s)
+      throws InvalidParameterException {
     super(a, b);
     this.scale = s;
   }
-  
+
   public ScaledBetaDistributionParameters(BetaDistributionParameters params, double s) {
     super(params);
     this.scale = s;
   }
-  
+
   public ScaledBetaDistributionParameters(ScaledBetaDistributionParameters params) {
     super((BetaDistributionParameters) params);
     this.scale = params.getScale();
   }
 
-  public double getScale() { return this.scale; }
+  public double getScale() {
+    return this.scale;
+  }
 }

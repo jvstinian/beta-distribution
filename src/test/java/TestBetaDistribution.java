@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.probability.BetaDistribution;
+import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class TestBetaDistribution {
   public void testBetaDistribution() {
     try {
       BetaDistribution dist = new BetaDistribution(0.5, 0.5);
-      UnivariateDifferentiableFunction /*BetaDistribution.BetaDistributionCDF*/ pdf = dist.getPDF();
+      UnivariateDifferentiableFunction pdf = dist.getPDF();
 
       assertTrue(Math.abs(pdf.value(0.1) - 1.061032954) < 1e-10);
       assertTrue(Math.abs(pdf.value(0.25) - 0.7351051939) < 1e-10);
@@ -24,6 +25,7 @@ public class TestBetaDistribution {
       fail("Got exception: " + e);
     }
   }
+
   @Test
   public void testBetaDistributionCDF() {
     try {
@@ -37,6 +39,24 @@ public class TestBetaDistribution {
       assertTrue(Math.abs(cdf.value(0.9) - 0.7951672353) < 1e-10);
     } catch (InvalidParameterException e) {
       fail("Got exception: " + e);
+    }
+  }
+
+  @Test
+  public void testBetaCDFDerivative() {
+    try {
+      // Select parameters so that beta distribution is
+      // the uniform distribution.
+      // The CDF is then the identity function.
+      BetaDistribution dist = new BetaDistribution(1.0, 1.0);
+      UnivariateDifferentiableFunction cdf = dist.getCDF();
+      DerivativeStructure ds = new DerivativeStructure(1, 2, 0, 0.25);
+      double[] derivs = cdf.value(ds).getAllDerivatives();
+      assertTrue(Math.abs(derivs[0] - 0.25) < 1e-10);
+      assertTrue(Math.abs(derivs[1] - 1.0) < 1e-10);
+      assertTrue(Math.abs(derivs[2] - 0.0) < 1e-10);
+    } catch (InvalidParameterException e) {
+      System.err.println(e);
     }
   }
 }

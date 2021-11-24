@@ -16,29 +16,28 @@
 
 package com.jvstinian.math.ep;
 
+import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.ScaledBetaDistribution;
+import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.SumOfCompoundPoissonScaledBetaDistributionParameters;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 import org.apache.commons.math3.analysis.solvers.BisectionSolver;
 import org.apache.commons.math3.exception.DimensionMismatchException;
 
-import com.jvstinian.math.InvalidParameterException;
-import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
-import com.jvstinian.math.probability.SumOfCompoundPoissonScaledBetaDistributionParameters;
-import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
-import com.jvstinian.math.probability.ScaledBetaDistribution;
-
-
-public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundPoissonScaledBetaDistributionParameters {
-  public SumOfCompoundPoissonScaledBetaDistributionEP(CompoundPoissonScaledBetaDistributionParameters[] params) {
+public class SumOfCompoundPoissonScaledBetaDistributionEP
+    extends SumOfCompoundPoissonScaledBetaDistributionParameters {
+  public SumOfCompoundPoissonScaledBetaDistributionEP(
+      CompoundPoissonScaledBetaDistributionParameters[] params) {
     super(params);
-  } 
+  }
 
   public static class OEP implements UnivariateDifferentiableFunction {
     private ScaledBetaDistribution.SurvivalFunction[] sfs;
     private double[] lambdas;
 
-    public OEP(
-        ScaledBetaDistribution.SurvivalFunction[] fs, double[] ls) throws DimensionMismatchException {
+    public OEP(ScaledBetaDistribution.SurvivalFunction[] fs, double[] ls)
+        throws DimensionMismatchException {
       if (fs.length != ls.length) {
         // check that the lambda and survival function arrays are of the same length
         throw new DimensionMismatchException(fs.length, ls.length);
@@ -71,7 +70,7 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
       return this.logOCP(t).exp().subtract(1.0).negate();
     }
 
-    /* TODO: Should this be here? 
+    /* TODO: Should this be here?
     public double getMaxValue() {
       double ret = 0.0;
       for (int i = 0; i < this.sfs.length; i++) {
@@ -81,11 +80,12 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
     }
     */
   };
-  
+
   public OEP getOEPFunction() {
     double[] lambdas = this.getPoissonRates();
     ScaledBetaDistributionParameters[] sbparams = this.getScaledBetaDistributionParameters();
-    ScaledBetaDistribution.SurvivalFunction[] sfs = new ScaledBetaDistribution.SurvivalFunction[sbparams.length];
+    ScaledBetaDistribution.SurvivalFunction[] sfs =
+        new ScaledBetaDistribution.SurvivalFunction[sbparams.length];
     for (int i = 0; i < sfs.length; i++) {
       ScaledBetaDistribution temp_scd = new ScaledBetaDistribution(sbparams[i]);
       sfs[i] = temp_scd.getSurvivalFunction();
@@ -93,8 +93,7 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
     return new OEP(sfs, lambdas);
   }
 
-  private static class OPMLObjective
-      implements UnivariateDifferentiableFunction {
+  private static class OPMLObjective implements UnivariateDifferentiableFunction {
     private OEP oep;
     private double prob;
 
@@ -111,7 +110,7 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
       return this.oep.logOCP(t).subtract(Math.log(1.0 - this.prob));
     }
   }
-    
+
   public double getMaxOccurrenceValue() {
     double ret = 0.0;
     ScaledBetaDistributionParameters[] sbparams = this.getScaledBetaDistributionParameters();
@@ -120,7 +119,7 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
     }
     return ret;
   }
-  
+
   public double[] calculateOccurrencePML(double[] qs) {
     OEP oep = this.getOEPFunction();
 
@@ -138,5 +137,4 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP extends SumOfCompoundP
     }
     return ret;
   }
-
 }

@@ -16,22 +16,19 @@
 
 package com.jvstinian.math.probability;
 
+import com.jvstinian.math.InvalidParameterException;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
-
-import com.jvstinian.math.InvalidParameterException;
-import com.jvstinian.math.probability.BetaDistributionParameters;
-
 
 public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
   public ScaledBetaDistribution(double a, double b, double s) throws InvalidParameterException {
     super(a, b, s);
   }
-  
+
   public ScaledBetaDistribution(BetaDistributionParameters params, double s) {
     super(params, s);
   }
-  
+
   public ScaledBetaDistribution(ScaledBetaDistributionParameters params) {
     // super((BetaDistributionParameters) params, params.getScale());
     super(params);
@@ -42,14 +39,15 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
     return this.scale;
   }
   */
-  
+
   private static class CDF implements UnivariateDifferentiableFunction {
     private UnivariateDifferentiableFunction betacdf;
     private double scale;
 
     public CDF(ScaledBetaDistributionParameters params) {
       this.betacdf = (new BetaDistribution((BetaDistributionParameters) params)).getCDF();
-      this.scale = params.getScale();;
+      this.scale = params.getScale();
+      ;
     }
 
     public double value(double x) {
@@ -67,14 +65,13 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
     */
   };
 
-  
   public static class SurvivalFunction implements UnivariateDifferentiableFunction {
     private CDF cdf;
 
     public SurvivalFunction(ScaledBetaDistributionParameters params) {
       this.cdf = new CDF(params);
     }
-    
+
     public double value(double x) {
       return 1.0 - this.cdf.value(x);
     }
@@ -89,7 +86,8 @@ public class ScaledBetaDistribution extends ScaledBetaDistributionParameters {
     }
     */
   };
-  
-  public SurvivalFunction getSurvivalFunction() { return new SurvivalFunction((ScaledBetaDistributionParameters) this); }
 
+  public SurvivalFunction getSurvivalFunction() {
+    return new SurvivalFunction((ScaledBetaDistributionParameters) this);
+  }
 }

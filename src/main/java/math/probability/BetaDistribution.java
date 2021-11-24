@@ -26,7 +26,7 @@ public class BetaDistribution extends BetaDistributionParameters {
   public BetaDistribution(double a, double b) throws InvalidParameterException {
     super(a, b);
   }
-  
+
   public BetaDistribution(BetaDistributionParameters params) {
     super(params);
   }

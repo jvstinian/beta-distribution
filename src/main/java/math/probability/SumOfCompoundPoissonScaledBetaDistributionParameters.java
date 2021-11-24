@@ -16,14 +16,11 @@
 
 package com.jvstinian.math.probability;
 
-import java.util.List;
-
-import com.jvstinian.math.InvalidParameterException;
-
 public class SumOfCompoundPoissonScaledBetaDistributionParameters {
   protected CompoundPoissonScaledBetaDistributionParameters[] distparams;
 
-  public SumOfCompoundPoissonScaledBetaDistributionParameters(CompoundPoissonScaledBetaDistributionParameters[] params) {
+  public SumOfCompoundPoissonScaledBetaDistributionParameters(
+      CompoundPoissonScaledBetaDistributionParameters[] params) {
     this.distparams = params;
   }
 
@@ -36,9 +33,10 @@ public class SumOfCompoundPoissonScaledBetaDistributionParameters {
   }
 
   public ScaledBetaDistributionParameters[] getScaledBetaDistributionParameters() {
-    ScaledBetaDistributionParameters[] result = new ScaledBetaDistributionParameters[this.distparams.length];
+    ScaledBetaDistributionParameters[] result =
+        new ScaledBetaDistributionParameters[this.distparams.length];
     for (int i = 0; i < result.length; i++) {
-      result[i] =  (ScaledBetaDistributionParameters) this.distparams[i];
+      result[i] = (ScaledBetaDistributionParameters) this.distparams[i];
     }
     return result;
   }
