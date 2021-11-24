@@ -69,16 +69,6 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP
     public DerivativeStructure value(DerivativeStructure t) {
       return this.logOCP(t).exp().subtract(1.0).negate();
     }
-
-    /* TODO: Should this be here?
-    public double getMaxValue() {
-      double ret = 0.0;
-      for (int i = 0; i < this.sfs.length; i++) {
-        ret = Math.max(sfs[i].getMaxValue(), ret);
-      }
-      return ret;
-    }
-    */
   };
 
   public OEP getOEPFunction() {
