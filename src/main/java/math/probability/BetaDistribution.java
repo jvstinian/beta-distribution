@@ -37,16 +37,6 @@ public class BetaDistribution extends BetaDistributionParameters {
       super(params);
     }
 
-    /* TODO: Remove
-    public double getAlpha() {
-      return this.alpha;
-    }
-
-    public double getBeta() {
-      return this.beta;
-    }
-    */
-
     public double value(double x) {
       DerivativeStructure c = new DerivativeStructure(1, 0, x);
       return this.value(c).getValue();
