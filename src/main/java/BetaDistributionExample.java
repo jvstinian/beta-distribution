@@ -18,6 +18,7 @@ package main.java;
 
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.ep.RMSEventLoss;
+import com.jvstinian.math.ep.ReturnPeriod;
 import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionEP;
 import com.jvstinian.math.probability.BetaDistribution;
 import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
@@ -30,24 +31,23 @@ public class BetaDistributionExample {
    */
   public static void main(String[] args) {
     try {
-      BetaDistribution dist = new BetaDistribution(0.5, 0.5);
-      double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
-      double[] quantiles = dist.calculateQuantiles(probs);
-      for (int i = 0; i < probs.length; i++) {
-        double prob = probs[i];
-        double quantile = quantiles[i];
-        System.out.println(
-            "Quantile for probability=" + String.valueOf(prob) + ": " + String.valueOf(quantile));
-      }
-    } catch (InvalidParameterException e) {
-      System.err.println(e);
-    }
-
-    try {
       // Calculate OEP
-      System.out.println("Calculating the Occurrence PML using the new class");
-      double[] probs =
-          new double[] {0.001, 0.005, 0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
+      System.out.println("==================================================");
+      System.out.println("Calculating the Occurrence PML for return periods ");
+      System.out.println("==================================================");
+      System.out.println("Return Period    Occurrence PML");
+      System.out.println("=============    ==============");
+      ReturnPeriod[] rps =
+          new ReturnPeriod[] {
+            new ReturnPeriod(10.0),
+            new ReturnPeriod(20.0),
+            new ReturnPeriod(50.0),
+            new ReturnPeriod(100.0),
+            new ReturnPeriod(200.0),
+            new ReturnPeriod(250.0),
+            new ReturnPeriod(500.0),
+            new ReturnPeriod(1000.0)
+          };
       RMSEventLoss[] elt =
           new RMSEventLoss[] {
             new RMSEventLoss(1, 0.1, 500.0, 500.0, 500.0, 10000.0),
@@ -61,15 +61,12 @@ public class BetaDistributionExample {
       }
       SumOfCompoundPoissonScaledBetaDistributionEP ep =
           new SumOfCompoundPoissonScaledBetaDistributionEP(distparams);
-      double[] opmls = ep.calculateOccurrencePML(probs);
-      for (int idx = 0; idx < probs.length; idx++) {
-        System.out.println(
-            "Occurrence PML for probability="
-                + String.valueOf(probs[idx])
-                + ": "
-                + String.valueOf(opmls[idx]));
+      double[] opmls = ep.calculateOccurrencePML(rps);
+      for (int idx = 0; idx < rps.length; idx++) {
+        System.out.print(String.format("%13s", String.valueOf(rps[idx].getReturnPeriod())));
+        System.out.print("    ");
+        System.out.println(String.format("%14s", String.format("%.6f", opmls[idx])));
       }
-
     } catch (InvalidParameterException e) {
       System.err.println(e);
     }

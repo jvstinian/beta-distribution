@@ -127,4 +127,12 @@ public class SumOfCompoundPoissonScaledBetaDistributionEP
     }
     return ret;
   }
+
+  public double[] calculateOccurrencePML(ReturnPeriod[] rps) {
+    double[] qs = new double[rps.length];
+    for (int i = 0; i < rps.length; i++) {
+      qs[i] = rps[i].getProbability();
+    }
+    return this.calculateOccurrencePML(qs);
+  }
 }
