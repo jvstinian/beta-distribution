@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.probability.BetaDistribution;
+import java.util.Random;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 import org.junit.Test;
@@ -57,6 +58,49 @@ public class TestBetaDistribution {
       assertTrue(Math.abs(derivs[2] - 0.0) < 1e-10);
     } catch (InvalidParameterException e) {
       System.err.println(e);
+    }
+  }
+
+  @Test
+  public void testBetaDistributionPDFOutsideSupport() {
+    try {
+      Random rnd = new Random();
+      double a = 0.5 + 2.0 * rnd.nextDouble();
+      double b = 0.5 + 2.0 * rnd.nextDouble();
+
+      BetaDistribution dist = new BetaDistribution(a, b);
+      UnivariateDifferentiableFunction pdf = dist.getPDF();
+
+      double[] testPoints = new double[] {-0.1, 0.0, 1.0, 1.1};
+      for (int i = 0; i < testPoints.length; i++) {
+        assertTrue(Math.abs(pdf.value(testPoints[i]) - 0.0) < 1e-10);
+      }
+    } catch (InvalidParameterException e) {
+      fail("Got exception: " + e);
+    }
+  }
+
+  @Test
+  public void testBetaDistributionCDFOutsideSupport() {
+    try {
+      Random rnd = new Random();
+      double a = 0.5 + 2.0 * rnd.nextDouble();
+      double b = 0.5 + 2.0 * rnd.nextDouble();
+
+      BetaDistribution dist = new BetaDistribution(a, b);
+      UnivariateDifferentiableFunction cdf = dist.getCDF();
+
+      double[] testPointsLower = new double[] {-1.0, -0.1, 0.0};
+      for (int i = 0; i < testPointsLower.length; i++) {
+        assertTrue(Math.abs(cdf.value(testPointsLower[i]) - 0.0) < 1e-10);
+      }
+
+      double[] testPointsUpper = new double[] {1.0, 1.1, 2.0};
+      for (int i = 0; i < testPointsUpper.length; i++) {
+        assertTrue(Math.abs(cdf.value(testPointsUpper[i]) - 1.0) < 1e-10);
+      }
+    } catch (InvalidParameterException e) {
+      fail("Got exception: " + e);
     }
   }
 }

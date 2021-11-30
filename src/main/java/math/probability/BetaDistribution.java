@@ -43,10 +43,15 @@ public class BetaDistribution extends BetaDistributionParameters {
     }
 
     public DerivativeStructure value(DerivativeStructure t) {
-      DerivativeStructure x1 = t.pow(this.alpha - 1.0); // x^(\alpha - 1}
-      DerivativeStructure x2 = t.subtract(1.0).negate().pow(this.beta - 1.0); // (1-x)^{\beta - 1}
-      DerivativeStructure denom = t.createConstant(Math.exp(Beta.logBeta(this.alpha, this.beta)));
-      return x1.multiply(x2).divide(denom);
+      final double tval = t.getValue();
+      if ((tval <= 0.0) || (tval >= 1.0)) {
+        return new DerivativeStructure(1, 0, 0.0); // constant 0.0
+      } else {
+        DerivativeStructure x1 = t.pow(this.alpha - 1.0); // x^(\alpha - 1}
+        DerivativeStructure x2 = t.subtract(1.0).negate().pow(this.beta - 1.0); // (1-x)^{\beta - 1}
+        DerivativeStructure denom = t.createConstant(Math.exp(Beta.logBeta(this.alpha, this.beta)));
+        return x1.multiply(x2).divide(denom);
+      }
     }
   };
 
@@ -64,22 +69,34 @@ public class BetaDistribution extends BetaDistributionParameters {
     }
 
     public double value(double x) {
-      return Beta.regularizedBeta(x, this.alpha, this.beta);
+      if (x <= 0.0) {
+        return 0.0;
+      } else if (x >= 1.0) {
+        return 1.0;
+      } else {
+        return Beta.regularizedBeta(x, this.alpha, this.beta);
+      }
     }
 
     public DerivativeStructure value(DerivativeStructure t) {
       final double x = t.getValue();
-      final int order = t.getOrder();
-      double[] f = new double[order + 1];
+      if (x <= 0.0) {
+        return new DerivativeStructure(1, 0, 0.0); // constant 0.0
+      } else if (x >= 1.0) {
+        return new DerivativeStructure(1, 0, 1.0); // constant 1.0
+      } else {
+        final int order = t.getOrder();
+        double[] f = new double[order + 1];
 
-      f[0] = this.value(x);
+        f[0] = this.value(x);
 
-      if (order > 0) {
-        DerivativeStructure ds = new DerivativeStructure(1, order - 1, 0, x);
-        double[] derivs = this.pdf.value(ds).getAllDerivatives();
-        System.arraycopy(derivs, 0, f, 1, derivs.length);
+        if (order > 0) {
+          DerivativeStructure ds = new DerivativeStructure(1, order - 1, 0, x);
+          double[] derivs = this.pdf.value(ds).getAllDerivatives();
+          System.arraycopy(derivs, 0, f, 1, derivs.length);
+        }
+        return t.compose(f);
       }
-      return t.compose(f);
     }
   };
 

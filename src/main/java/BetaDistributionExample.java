@@ -46,7 +46,8 @@ public class BetaDistributionExample {
     try {
       // Calculate OEP
       System.out.println("Calculating the Occurrence PML using the new class");
-      double[] probs = new double[] {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
+      double[] probs =
+          new double[] {0.001, 0.005, 0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99};
       RMSEventLoss[] elt =
           new RMSEventLoss[] {
             new RMSEventLoss(1, 0.1, 500.0, 500.0, 500.0, 10000.0),
