@@ -18,17 +18,17 @@ package com.jvstinian.math.probability;
 
 import com.jvstinian.math.InvalidParameterException;
 
-public class CompoundPoissonScaledBetaDistributionParameters
+public class CompositePoissonScaledBetaDistributionParameters
     extends ScaledBetaDistributionParameters {
   protected double lambda;
 
-  public CompoundPoissonScaledBetaDistributionParameters(double a, double b, double s, double l)
+  public CompositePoissonScaledBetaDistributionParameters(double a, double b, double s, double l)
       throws InvalidParameterException {
     super(a, b, s);
     this.lambda = l;
   }
 
-  public CompoundPoissonScaledBetaDistributionParameters(
+  public CompositePoissonScaledBetaDistributionParameters(
       BetaDistributionParameters params, double s, double l) {
     super(params, s);
     this.lambda = l;

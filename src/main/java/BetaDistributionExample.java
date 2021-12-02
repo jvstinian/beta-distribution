@@ -19,9 +19,9 @@ package main.java;
 import com.jvstinian.math.InvalidParameterException;
 import com.jvstinian.math.ep.RMSEventLoss;
 import com.jvstinian.math.ep.ReturnPeriod;
-import com.jvstinian.math.ep.SumOfCompoundPoissonScaledBetaDistributionEP;
+import com.jvstinian.math.ep.IndependentCompositePoissonScaledBetaDistributionsEP;
 import com.jvstinian.math.probability.BetaDistribution;
-import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.CompositePoissonScaledBetaDistributionParameters;
 
 public class BetaDistributionExample {
   /**
@@ -54,13 +54,13 @@ public class BetaDistributionExample {
             new RMSEventLoss(2, 0.1, 300.0, 400.0, 600.0, 5000.0),
             new RMSEventLoss(3, 0.5, 200.0, 300.0, 400.0, 4000.0)
           };
-      CompoundPoissonScaledBetaDistributionParameters[] distparams =
-          new CompoundPoissonScaledBetaDistributionParameters[elt.length];
+      CompositePoissonScaledBetaDistributionParameters[] distparams =
+          new CompositePoissonScaledBetaDistributionParameters[elt.length];
       for (int idx = 0; idx < elt.length; idx++) {
         distparams[idx] = elt[idx].getDistributionParameters();
       }
-      SumOfCompoundPoissonScaledBetaDistributionEP ep =
-          new SumOfCompoundPoissonScaledBetaDistributionEP(distparams);
+      IndependentCompositePoissonScaledBetaDistributionsEP ep =
+          new IndependentCompositePoissonScaledBetaDistributionsEP(distparams);
       double[] opmls = ep.calculateOccurrencePML(rps);
       for (int idx = 0; idx < rps.length; idx++) {
         System.out.print(String.format("%13s", String.valueOf(rps[idx].getReturnPeriod())));

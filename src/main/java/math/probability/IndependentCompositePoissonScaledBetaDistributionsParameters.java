@@ -16,11 +16,11 @@
 
 package com.jvstinian.math.probability;
 
-public class SumOfCompoundPoissonScaledBetaDistributionParameters {
-  protected CompoundPoissonScaledBetaDistributionParameters[] distparams;
+public class IndependentCompositePoissonScaledBetaDistributionsParameters {
+  protected CompositePoissonScaledBetaDistributionParameters[] distparams;
 
-  public SumOfCompoundPoissonScaledBetaDistributionParameters(
-      CompoundPoissonScaledBetaDistributionParameters[] params) {
+  public IndependentCompositePoissonScaledBetaDistributionsParameters(
+      CompositePoissonScaledBetaDistributionParameters[] params) {
     this.distparams = params;
   }
 
