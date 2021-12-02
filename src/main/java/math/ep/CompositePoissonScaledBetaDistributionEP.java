@@ -17,15 +17,15 @@
 package com.jvstinian.math.ep;
 
 import com.jvstinian.math.InvalidParameterException;
-import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.CompositePoissonScaledBetaDistributionParameters;
 import com.jvstinian.math.probability.ScaledBetaDistribution;
 import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 
-public class CompoundPoissonScaledBetaDistributionEP
-    extends CompoundPoissonScaledBetaDistributionParameters {
-  public CompoundPoissonScaledBetaDistributionEP(double a, double b, double s, double l)
+public class CompositePoissonScaledBetaDistributionEP
+    extends CompositePoissonScaledBetaDistributionParameters {
+  public CompositePoissonScaledBetaDistributionEP(double a, double b, double s, double l)
       throws InvalidParameterException {
     super(a, b, s, l);
   }

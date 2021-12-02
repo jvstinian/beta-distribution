@@ -16,19 +16,19 @@
 
 package com.jvstinian.math.ep;
 
-import com.jvstinian.math.probability.CompoundPoissonScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.CompositePoissonScaledBetaDistributionParameters;
 import com.jvstinian.math.probability.ScaledBetaDistribution;
 import com.jvstinian.math.probability.ScaledBetaDistributionParameters;
-import com.jvstinian.math.probability.SumOfCompoundPoissonScaledBetaDistributionParameters;
+import com.jvstinian.math.probability.IndependentCompositePoissonScaledBetaDistributionsParameters;
 import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction;
 import org.apache.commons.math3.analysis.solvers.BisectionSolver;
 import org.apache.commons.math3.exception.DimensionMismatchException;
 
-public class SumOfCompoundPoissonScaledBetaDistributionEP
-    extends SumOfCompoundPoissonScaledBetaDistributionParameters {
-  public SumOfCompoundPoissonScaledBetaDistributionEP(
-      CompoundPoissonScaledBetaDistributionParameters[] params) {
+public class IndependentCompositePoissonScaledBetaDistributionsEP
+    extends IndependentCompositePoissonScaledBetaDistributionsParameters {
+  public IndependentCompositePoissonScaledBetaDistributionsEP(
+      CompositePoissonScaledBetaDistributionParameters[] params) {
     super(params);
   }
 
